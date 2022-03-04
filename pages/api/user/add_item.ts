@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import dbConnect from "@/lib/db";
+import { hashPassword } from "@/lib/auth";
 import { IUser } from "@/models/user/user.types";
 import UserModel from "@/models/user/user.model";
 import RoleModel from "@/models/role/role.model";
@@ -17,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
 		const newItem: IUser = {
 			username: "aaa",
-			password: "aaa",
+			password: await hashPassword("aaa"),
 			firstname: "mark",
 			lastname: "zuckerberg",
 			nickname: "mark",
