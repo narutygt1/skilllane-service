@@ -1,11 +1,14 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import dbConnect from "@/lib/db";
+import jwt from "jsonwebtoken";
 import { verifyPassword } from "@/lib/auth";
 import UserModel from "@/models/user/user.model";
+require("@/models/role/role.model");
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<IResponseData>) {
 	if (req.method == "POST") {
+		const secret = process.env.JWT_SECRET_KEY || "";
 		const { username, password } = req.body;
 
 		if (!username) {
@@ -18,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
 		await dbConnect();
 
-		const resUser = await UserModel.findOne({ username });
+		const resUser = await UserModel.findOne({ username }).populate("role");
 		if (!resUser) {
 			return res.status(410).json({ message: "Username or password is invalid" });
 		}
@@ -29,7 +32,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 			return res.status(405).json({ message: "Username or password is invalid" });
 		}
 
-		res.status(200).json({ message: "Success" });
+		let temp = jwt.sign(
+			{
+				...resUser,
+			},
+			secret
+		);
+
+		res.status(200).json({ data: temp, message: "Signed In" });
 	} else {
 		res.status(405).json({ message: "Method Not Allowed" });
 	}
