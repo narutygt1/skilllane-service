@@ -3,10 +3,18 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import dbConnect from "@/lib/db";
 import { IUser } from "@/models/user/user.types";
 import UserModel from "@/models/user/user.model";
+import RoleModel from "@/models/role/role.model";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<IResponseData>) {
 	if (req.method == "POST") {
 		await dbConnect();
+
+		const resRole = await RoleModel.findOne({ name: "instructor" }).catch(() => {});
+
+		if (!resRole) {
+			return res.status(401).json({ message: "Create failed" });
+		}
+
 		const newItem: IUser = {
 			username: "aaa",
 			password: "aaa",
@@ -15,7 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 			nickname: "mark",
 			birthday: new Date(),
 			gender: "male",
-			role: "613fdbab1ccac178ecee0840",
+			role: resRole._id,
 		};
 
 		await UserModel.create(newItem)
