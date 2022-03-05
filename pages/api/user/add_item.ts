@@ -34,7 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
 		const newItem: IUser = {
 			username,
-			password: await hashPassword("aaa"),
+			password: await hashPassword(password),
 			firstname,
 			lastname,
 			nickname,
