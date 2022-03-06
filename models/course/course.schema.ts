@@ -39,14 +39,14 @@ const CourseSchema = new Schema<ICourseDocument, ICourseModel>({
 		},
 	},
 	start_time: {
-		type: Number,
+		type: Date,
 		required: true,
-		default: 0,
+		default: new Date(),
 	},
 	end_time: {
-		type: Number,
+		type: Date,
 		required: true,
-		default: 0,
+		default: new Date(),
 	},
 	number_of_student: {
 		type: Number,
