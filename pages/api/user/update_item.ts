@@ -8,14 +8,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 	await runMiddleware(req, res, cors);
 
 	if (req.method == "POST") {
-		const { id, username, firstname, lastname, nickname, gender, birthday } = req.body;
+		const { id, firstname, lastname, nickname, gender, birthday } = req.body;
 		if (!id) return res.status(400).json({ message: "'id' is undefined" });
-		if (!username) return res.status(400).json({ message: "'username' is undefined" });
-		if (!firstname) return res.status(400).json({ message: "'firstname' is undefined" });
-		if (!lastname) return res.status(400).json({ message: "'lastname' is undefined" });
-		if (!nickname) return res.status(400).json({ message: "'nickname' is undefined" });
-		if (!gender) return res.status(400).json({ message: "'gender' is undefined" });
-		if (!birthday) return res.status(400).json({ message: "'birthday' is undefined" });
 
 		await dbConnect();
 
@@ -24,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 		});
 
 		if (!resUser) {
-			return res.status(401).json({ message: `'${username}' does existed` });
+			return res.status(401).json({ message: "Username does not exist" });
 		}
 
 		if (firstname) {

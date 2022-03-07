@@ -10,17 +10,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 	await runMiddleware(req, res, cors);
 
 	if (req.method == "GET") {
+		const { id } = req.query;
+		if (!id) return res.status(400).json({ message: "'id' is undefined" });
+
 		await dbConnect();
-		const courseRes =
-			(await CourseModel.find({}).populate([
-				{
-					path: "category",
-				},
-				{
-					path: "instructor",
-					select: "firstname lastname nickname",
-				},
-			])) || [];
+		const courseRes = await CourseModel.findById(id).populate([
+			{
+				path: "category",
+			},
+			{
+				path: "instructor",
+				select: "firstname lastname nickname",
+			},
+		]);
 		res.status(200).json({ data: courseRes });
 	} else {
 		res.status(405).json({ message: "Method Not Allowed" });
