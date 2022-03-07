@@ -2,6 +2,7 @@ import { Document, Model } from "mongoose";
 
 export interface IRole {
 	name: "student" | "instructor";
+	display: string;
 	create_date?: Date;
 }
 

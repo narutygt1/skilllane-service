@@ -2,6 +2,7 @@ import { Document, Model } from "mongoose";
 
 export interface ICategory {
   name: string;
+  display: string;
   create_date?: Date;
 }
 

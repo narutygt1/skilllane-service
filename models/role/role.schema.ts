@@ -6,6 +6,10 @@ const RoleSchema = new Schema<IRoleDocument, IRoleModel>({
 		type: String,
 		required: true,
 	},
+	display: {
+		type: String,
+		required: true,
+	},
 	create_date: {
 		type: Date,
 		default: new Date(),

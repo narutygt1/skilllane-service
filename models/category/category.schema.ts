@@ -6,6 +6,10 @@ const CategorySchema = new Schema<ICategoryDocument, ICategoryModel>({
 		type: String,
 		required: true,
 	},
+	display: {
+		type: String,
+		required: true,
+	},
 	create_date: {
 		type: Date,
 		default: new Date(),
