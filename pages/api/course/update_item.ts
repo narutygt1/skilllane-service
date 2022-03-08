@@ -41,7 +41,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 			resCourse.category = resCat._id;
 		}
 
-		if (image) {
+		if (image !== undefined) {
 			resCourse.image = image || "";
 		}
 
